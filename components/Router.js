@@ -17,9 +17,10 @@ export const RootStack = createStackNavigator({
     screen: ProductDetails,
     navigationOptions: ({navigation}) => ({
       title: `${navigation.state.params.productname}`,
-      headerTintColor: 'white',
+      headerTintColor: '#7c0c10',
       headerStyle: {
-        backgroundColor: '#7c0c10'
+        backgroundColor: 'white',
+        borderBottomColor: 'black'
       }
     })
   }

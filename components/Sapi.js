@@ -7,43 +7,52 @@ import { idrFormat } from '../config';
 import * as Animatable from 'react-native-animatable';
 
 export default class Sapi extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      visibility: false
+    }
+  }
 
   render() {
     let { products, navigation } = this.props;
     return(
       <View>
         {
-          <ScrollView>
-            <Animatable.View
-              style={styles.container}
-              animation='fadeInUpBig'
-              delay={1500}
-              iterationCount={1}
-              direction='alternate'
-              >
-              {
-                products.map((x, i) =>
-                <TouchableOpacity key={i} onPress={() => navigation.navigate('ProductDetails', x)}>
-                  <View>
-                    <Image
-                     resizeMode='contain'
-                     style={{width: 160, height: 160}}
-                     source={{uri: `${SERVER_URL}images/products/${x.photo}`}}
-                    />
-                    <View style={{flexDirection: 'row'}}>
-                      <Text style={styles.title}>{x.productname}</Text>
-                    </View>
-                    <Text style={styles.price}>{idrFormat(x.enduserprice)}/Kg</Text>
-                  </View>
-                </TouchableOpacity>
-                )
-              }
-            </Animatable.View>
-          </ScrollView>
+          !this.state.visibility &&
+          <Spinner color='#7c0c10'/>
         }
-      </View>
-    )
-  }
+        <ScrollView style={{visibility: this.state.visibility ? 'visible' : 'hidden'}}>
+          <Animatable.View
+            style={styles.container}
+            animation='fadeInUpBig'
+            delay={2000}
+            iterationCount={1}
+            direction='alternate'
+            >
+            {
+              products.map((x, i) =>
+              <TouchableOpacity key={i} onPress={() => navigation.navigate('ProductDetails', x)}>
+                <View>
+                  <Image
+                    resizeMode='contain'
+                    onLoadEnd={(e) => this.setState({visibility: true})}
+                    style={{width: 160, height: 160}}
+                    source={{uri: `${SERVER_URL}images/products/${x.photo}`}}
+                    />
+                  <View style={{flexDirection: 'row'}}>
+                    <Text style={styles.title}>{x.productname}</Text>
+                  </View>
+                  <Text style={styles.price}>{idrFormat(x.enduserprice)}/Kg</Text>
+                </View>
+              </TouchableOpacity>
+            )
+          }
+        </Animatable.View>
+      </ScrollView>
+    </View>
+  )
+}
 }
 
 var styles = StyleSheet.create({

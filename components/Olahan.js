@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { Spinner } from 'native-base';
 import { getAllProducts } from '../actions/Saga';
 import { SERVER_URL } from '../config';
@@ -9,7 +9,7 @@ import * as Animatable from 'react-native-animatable';
 export default class Olahan extends Component {
 
   render() {
-    let { products } = this.props;
+    let { products, navigation } = this.props;
     return(
       <View>
         {
@@ -17,23 +17,25 @@ export default class Olahan extends Component {
             <Animatable.View
               style={styles.container}
               animation='fadeInUpBig'
-              delay={1500}
+              delay={2000}
               iterationCount={1}
               direction='alternate'
               >
               {
                 products.map((x, i) =>
-                <View key={i}>
-                  <Image
-                   resizeMode='contain'
-                   style={{width: 160, height: 160}}
-                   source={{uri: `${SERVER_URL}images/products/${x.photo}`}}
-                  />
-                  <View style={{flexDirection: 'row'}}>
-                    <Text style={styles.title}>{x.productname}</Text>
+                <TouchableOpacity key={i} onPress={() => navigation.navigate('ProductDetails', x)}>
+                  <View>
+                    <Image
+                     resizeMode='contain'
+                     style={{width: 160, height: 160}}
+                     source={{uri: `${SERVER_URL}images/products/${x.photo}`}}
+                    />
+                    <View style={{flexDirection: 'row'}}>
+                      <Text style={styles.title}>{x.productname}</Text>
+                    </View>
+                    <Text style={styles.price}>{idrFormat(x.enduserprice)}/Kg</Text>
                   </View>
-                  <Text style={styles.price}>{idrFormat(x.enduserprice)}/Kg</Text>
-                </View>
+                </TouchableOpacity>
                 )
               }
             </Animatable.View>
