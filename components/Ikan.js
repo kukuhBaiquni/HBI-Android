@@ -6,7 +6,7 @@ import { SERVER_URL } from '../config';
 import { idrFormat } from '../config';
 import * as Animatable from 'react-native-animatable';
 
-export default class Olahan extends Component {
+export default class Ikan extends Component {
 
   render() {
     let { products } = this.props;
